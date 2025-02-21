@@ -1,48 +1,47 @@
-"""Prints the palm position of each hand, every frame. When a device is 
-connected we set the tracking mode to desktop and then generate logs for 
-every tracking frame received. The events of creating a connection to the 
-server and a device being plugged in also generate logs. 
+""" Example of tracking event usage with the Leap Motion Python SDK. 
+This script is basically me learning how to get data from the Leap Motion
+and store it in a way that I can use it later. e.g. as numpy arrays.
+
+This script is based on the tracking_event_example.py script from leapc-python-bindings
+and the tracking_event_example_lkc.py script from leapc-python-api.
 """
 
 import leap
-import time
+import numpy as np
 
 
 class MyListener(leap.Listener):
-    def on_connection_event(self, event):
-        print("Connected")
-
-    def on_device_event(self, event):
-        try:
-            with event.device.open():
-                info = event.device.get_info()
-        except leap.LeapCannotOpenDeviceError:
-            info = event.device.get_info()
-
-        print(f"Found device {info.serial}")
+    def __init__(self):
+        super().__init__()
+        self.right_palm_position = None  # To store the right hand's palm position
 
     def on_tracking_event(self, event):
-        print(f"Frame {event.tracking_frame_id} with {len(event.hands)} hands.")
+        """ Collects a single frame of tracking data and extracts the right palm position. """
         for hand in event.hands:
-            hand_type = "left" if str(hand.type) == "HandType.Left" else "right"
-            print(
-                f"Hand id {hand.id} is a {hand_type} hand with position ({hand.palm.position.x}, {hand.palm.position.y}, {hand.palm.position.z})."
-            )
+            if str(hand.type) == "HandType.Right":  # Check if it's the right hand
+                self.right_palm_position = np.array(
+                    [hand.palm.position.x, hand.palm.position.y, hand.palm.position.z]
+                )
+                print(f"Right palm position captured: {self.right_palm_position}")
+                return  # Stop after collecting the first valid frame
 
 
-def main():
+def collect_right_hand_position():
+    """ Connects to the Leap Motion controller and collects a single frame's right palm position. """
     my_listener = MyListener()
-
     connection = leap.Connection()
     connection.add_listener(my_listener)
-
-    running = True
-
+ 
     with connection.open():
         connection.set_tracking_mode(leap.TrackingMode.Desktop)
-        while running:
-            time.sleep(1)
+
+        # Wait for a frame to be collected
+        while my_listener.right_palm_position is None:
+            pass  # Keep waiting until data is captured
+
+    return my_listener.right_palm_position
 
 
 if __name__ == "__main__":
-    main()
+    right_hand_position = collect_right_hand_position()
+    print("Stored Right Palm Position as NumPy Array:", right_hand_position)
