@@ -18,9 +18,9 @@ For Conda (or Anaconda) users:
 (use `conda deactivate` to go back to your regular Python environment)
 
 # Install the leapc stuff: 
-pip install -r requirements.txt  
-pip install -e leapc-python-api  
+`pip install -r requirements.txt`    
+`pip install -e leapc-python-api`    
 
 # Plug in your leap!!!
 And then test the installation by running an example:  
-python examples/tracking_event_example.py
+`python examples/tracking_event_example.py`  
