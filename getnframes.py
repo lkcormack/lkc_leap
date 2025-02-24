@@ -19,10 +19,10 @@ class MyListener(leap.Listener):
 
         if right_hand:
             palm_pos = right_hand.palm.position
-            index_finger = next((f for f in right_hand.digits if str(f.type) == "FingerType.Index"), None)
+            index_finger = next ((f for f in right_hand.digits if f.finger_id == 1), None)
 
             if index_finger:
-                index_tip = index_finger.tip_position
+                index_tip = index_finger.distal.next_joint
                 frame_data = [
                     current_time,            # Time since start
                     palm_pos.x, palm_pos.y, palm_pos.z,  # Palm position
@@ -47,7 +47,7 @@ def collect_frames(max_frames=600, save_path="leap_motion_data.npy"):
 
         # Wait until we collect enough frames
         while len(my_listener.data) < max_frames:
-            pass
+            print(len(my_listener.data))
 
     # Convert collected data to NumPy array
     data_array = my_listener.get_numpy_data()
