@@ -2,7 +2,6 @@ import leap
 import numpy as np
 import time
 
-
 class MyListener(leap.Listener):
     def __init__(self, max_frames=600):
         super().__init__()
@@ -20,7 +19,7 @@ class MyListener(leap.Listener):
 
         if right_hand:
             palm_pos = right_hand.palm.position
-            index_finger = next((f for f in right_hand.fingers if str(f.type) == "FingerType.Index"), None)
+            index_finger = next((f for f in right_hand.digits if str(f.type) == "FingerType.Index"), None)
 
             if index_finger:
                 index_tip = index_finger.tip_position
@@ -61,5 +60,6 @@ def collect_frames(max_frames=600, save_path="leap_motion_data.npy"):
 
 
 if __name__ == "__main__":
+    input("Press Enter to start collecting frames...")
     collected_data = collect_frames()
     print("Final Shape of Data:", collected_data.shape)  # Should be (600, 7)
