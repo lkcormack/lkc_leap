@@ -8,7 +8,8 @@ by the `Listener` methods.
 
 Example: `on_tracking_event(event)` fires when a new frame of tracking data arrives.
 
-## Tracking Event (event in on_tracking_event)
+## Tracking Event (event returned by `on_tracking_event()`)
+
 A tracking event occurs whenever the leap controller has valid data. Tracking
 events occur as fast as 120 Hz (events per second), but the actual speed
 depends on the computer being used with the leap controller.  
@@ -20,22 +21,28 @@ It has properties like:
 
 ## `Hand` (hand in event.hands)
 ### Important
-The hand is fit with a skeleton model with *bones* connected by *joints*.  
-*Only the joints have x, y, z coordinates*. Thus, whenever we want
-positional data, we need drill down from the "event" to the joint position:  
-event -> hand -> digit (finger) -> bone -> joint
+> [!IMPORTANT]
+>
+> The hand is fit with a skeleton model with *bones* connected by *joints*.  
+> *Only the joints have x, y, z coordinates*. Thus, whenever we want
+> positional data, we need drill down from the "event" to the joint position:  
+> event -> hand -> digit (finger) -> bone -> joint (`joint_next` or `joint_previous`)
 
 
-This contains all the data for an individual hand.
+Hand contains all the data for an individual hand.
 Properties include:
 `hand.palm.position.x, .y, .z`: The palm's position in 3D space.
 `hand.digits`: A list of Digit objects.
 
 ## `Digit` (digit in hand.digits) 
-(note: this was`Finger` (finger in hand.fingers))
+Represents a single finger.  
+
+> [!WARNING]
+>
+> (note: this used to be `Finger` (finger in hand.fingers), and this confuses AI)
 
 Digits have IDs and bones. Confusingly, the digit ID property is called `finger_id`
-Represents a single finger.
+
 Properties include:
 `digit.distal.next_joint.x, .y, .z`: The position of the fingertip.
 
@@ -50,3 +57,5 @@ hand data at a given time point.
 The `event` contains a list of hand objects.
 Each `hand` contains palm and digit (finger) data as
 objects of class `Palm` and `Digit`, respectively.
+
+The digits each have 4 bones, and the bones each have 2 joints, and it the joints that contain the x,y,z positional data.
