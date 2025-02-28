@@ -34,7 +34,8 @@ Properties include:
 `hand.palm.position.x, .y, .z`: The palm's position in 3D space.
 `hand.digits`: A list of Digit objects.
 
-## `Digit` (digit in hand.digits) 
+## `Digit` (digit in hand.digits)
+
 Represents a single finger.  
 
 > [!WARNING]
@@ -44,18 +45,38 @@ Represents a single finger.
 Digits have IDs and bones. Confusingly, the digit ID property is called `finger_id`
 
 Properties include:
-`digit.distal.next_joint.x, .y, .z`: The position of the fingertip.
 
-The key is that the joints are the things with positions. Bones have a 
-"previous" (proximal) joint and a "next" (distal) joint. It the above 
-example, the `next_joint` is actually the tip of the finger because the 
-`distal` bone is the last bone on the finger.
+`bones` - a list of the bones
+
+and each bone, `metacarpal`, `proximal`, `intermediate`, and `distal` , e.g. 
+
+`digit.distal`
+
+## Bone (bone in digit.bones)
+
+Represents a single bone (on a single finger of a single hand)
+
+Properties:
+
+`previous.joint` - the proximal joint of the bone
+
+`next.joint` - the distal joint of the bone
+
+`width` - the width of the bone
+
+`rotation` - includes x,y,z and a "w" that is currently a mystery
+
+To get the position of the fingertip, we get the position of the "next joint" of the distal bone. Since the distal bone is the last bone, the distal "joint" is actually the position of the fingertip, e.g.,
+
+`digit.distal.next_joint.x, .y, .z`: The position of the fingertip. 
+
+The key is that the *joints* are the things with positions. So to get finger positions, we get the  "previous" (proximal) joint and a "next" (distal) joint.
 
 ## Summary
 Each tracking event is effectively a "frame" or snapshot of the
 hand data at a given time point.
 The `event` contains a list of hand objects.
 Each `hand` contains palm and digit (finger) data as
-objects of class `Palm` and `Digit`, respectively.
+objects of class `Palm` and `Digit`, respectively. The digits have bones, the bones have joints, and the joints have the x, y, z positions in space.
 
-The digits each have 4 bones, and the bones each have 2 joints, and it the joints that contain the x,y,z positional data.
+The digits each have 4 bones, and the bones each have 2 joints, and it is the joints that contain the x,y,z positional data.

@@ -19,7 +19,7 @@ class MyListener(leap.Listener):
 
         if right_hand:
             palm_pos = right_hand.palm.position
-            index_finger = next ((f for f in right_hand.digits if f.finger_id == 1), None)
+            index_finger = next((f for f in right_hand.digits if f.finger_id == 1), None)
 
             if index_finger:
                 index_tip = index_finger.distal.next_joint
