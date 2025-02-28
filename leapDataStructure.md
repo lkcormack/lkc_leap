@@ -64,9 +64,9 @@ Properties:
 
 `next.joint` - the distal joint of the bone
 
-`width` - the width of the bone
+`width` - the average width of the finger (flesh) on the bone
 
-`rotation` - includes x,y,z and a "w" that is currently a mystery
+`rotation` - (presumably) the four entries of the rotation matrix of the bone from the forward (z) direction (don't know in what order yet)
 
 To get the position of the fingertip, we get the position of the "next joint" of the distal bone. Since the distal bone is the last bone, the distal "joint" is actually the position of the fingertip, e.g.,
 
