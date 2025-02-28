@@ -2,6 +2,8 @@
 These are the python bindings to the LeapC API provided by
 Ultraleap (formerly Leap Motion) for the Leap Controller 2.  
 
+The full description of the C structures that are being converted to Python objects are [here](https://docs.ultraleap.com/api-reference/tracking-api/group/group___structs.html) (https://docs.ultraleap.com/api-reference/tracking-api/group/group___structs.html).
+
 ## Events (leap.Event)
 These are generated automatically by the Leap Controller and are "heard"
 by the `Listener` methods.
