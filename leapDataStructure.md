@@ -30,9 +30,11 @@ It has properties like:
 > positional data, we need drill down from the "event" to the joint position:  
 > event -> hand -> digit (finger) -> bone -> joint (`joint_next` or `joint_previous`)
 
-
 Hand contains all the data for an individual hand.
 Properties include:
+
+`hand.type` - either `HandType.Right`or `HandType.Left`
+
 `hand.palm.position.x, .y, .z`: The palm's position in 3D space.
 `hand.digits`: A list of Digit objects.
 

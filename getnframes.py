@@ -15,7 +15,8 @@ class MyListener(leap.Listener):
             return  # Stop collecting once we have enough frames
 
         current_time = time.time() - self.start_time  # Get relative timestamp
-        right_hand = next((hand for hand in event.hands if str(hand.type) == "HandType.Right"), None)
+        # event.hands is a list of len 0, 1, or 2 ([left], [right], or [left, right]) 
+        right_hand = next((hand for hand in event.hands if str(hand.type) == "HandType.Right"), None) # None in case no hand detected
 
         if right_hand:
             palm_pos = right_hand.palm.position
